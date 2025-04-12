@@ -30,8 +30,6 @@ const solanaAdapter = new SolanaAdapter({
     new SolflareWalletAdapter(),
     new TrustWalletAdapter()
   ],
-  relayerUrl: import.meta.env.VITE_RELAYER_URL,
-  enableGasSponsorship: true,
 })
 
 // Create modal

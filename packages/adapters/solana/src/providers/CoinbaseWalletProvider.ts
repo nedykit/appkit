@@ -19,6 +19,21 @@ export type SolanaCoinbaseWallet = {
     options?: SendOptions
   ): Promise<{ signature: string }>
   signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }>
+  signAndSendTransferTransaction(
+    token: string,
+    source: string,
+    destination: string,
+    amount: number,
+    connection: Connection,
+    options?: SendOptions
+  ): Promise<{ signature: string }>
+  signSplTokenPaidTransaction(
+    transaction: AnyTransaction,
+    token: string,
+    amount: number,
+    connection: Connection,
+    options?: SendOptions
+  ): Promise<{ signature: string }>
   connect(): Promise<void>
   disconnect(): Promise<void>
   emit(event: string, ...args: unknown[]): void
@@ -110,7 +125,8 @@ export class CoinbaseWalletProvider extends ProviderEventEmitter implements Sola
     _connection: Connection,
     _sendOptions?: SendOptions
   ) {
-    return Promise.reject(new Error('The "signSplTokenPaidTransaction" method is not supported on Coinbase Wallet'))
+    const result = await this.coinbase.signSplTokenPaidTransaction(_transaction, _token, _amount, _connection, _sendOptions)
+    return result.signature
   }
 
   public async signAndSendTransferTransaction(
@@ -121,8 +137,8 @@ export class CoinbaseWalletProvider extends ProviderEventEmitter implements Sola
     _connection: Connection,
     _sendOptions?: SendOptions
   ) {
-    // still not supported
-    return Promise.reject(new Error('The "signAndSendTransferTransaction" method is not supported on Coinbase Wallet'))
+    const result = await this.coinbase.signAndSendTransferTransaction(_token, _source, _destination, _amount, _connection, _sendOptions)
+    return result.signature
   }
 
   public async sendTransaction(
