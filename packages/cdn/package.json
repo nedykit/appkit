@@ -1,0 +1,56 @@
+{
+  "name": "@nedykit/appkit-cdn",
+  "version": "0.1.0",
+  "sideEffects": false,
+  "main": "dist/wagmi.js",
+  "type": "module",
+  "files": [
+    "dist",
+    "!tsconfig.tsbuildinfo"
+  ],
+  "scripts": {
+    "build:clean": "rm -rf dist",
+    "build": "tsc && vite build",
+    "watch": "tsc --watch",
+    "upload": "pnpm build && pnpm publish --public",
+    "serve": "http-server dist -p 8080 --cors"
+  },
+  "devDependencies": {
+    "@wagmi/connectors": "5.7.11",
+    "http-server": "14.1.1",
+    "vite-plugin-node-polyfills": "0.23.0"
+  },
+  "peerDependencies": {
+    "typescript": "5.7.3"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@nedykit/appkit": "workspace:*",
+    "@nedykit/appkit-adapter-ethers": "workspace:*",
+    "@nedykit/appkit-adapter-ethers5": "workspace:*",
+    "@nedykit/appkit-adapter-solana": "workspace:*",
+    "@nedykit/appkit-adapter-wagmi": "workspace:*",
+    "@nedykit/appkit-polyfills": "workspace:*",
+    "@wagmi/connectors": "5.7.11",
+    "@wagmi/core": "2.16.7",
+    "viem": "2.23.13",
+    "vite": "5.4.12",
+    "wagmi": "2.14.15"
+  },
+  "keywords": [
+    "appkit",
+    "wallet",
+    "onboarding",
+    "reown",
+    "dapps",
+    "web3",
+    "wagmi",
+    "ethereum",
+    "solana",
+    "bitcoin"
+  ]
+}

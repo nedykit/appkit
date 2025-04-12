@@ -1,0 +1,23 @@
+{
+  "name": "@examples/vue-ethers-solana",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@nedykit/appkit": "workspace:*",
+    "@nedykit/appkit-adapter-ethers": "workspace:*",
+    "@nedykit/appkit-adapter-solana": "workspace:*",
+    "ethers": "5.8.0",
+    "vue": "3.4.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "5.0.2",
+    "typescript": "5.7.3",
+    "vite": "5.4.12",
+    "vue-tsc": "2.1.8"
+  }
+}

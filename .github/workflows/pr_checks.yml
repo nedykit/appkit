@@ -1,0 +1,214 @@
+name: Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
+
+permissions:
+  pull-requests: write
+
+concurrency:
+  # Support push/pr as event types with different behaviors each:
+  # 1. push: queue up builds
+  # 2. pr: only allow one run per PR
+  group: ${{ github.workflow }}-${{ github.event.type }}${{ github.event.pull_request.number }}
+  # If there is already a workflow running for the same pull request, cancel it
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  setup_and_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+
+      - name: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'pnpm'
+
+      - name: install
+        run: pnpm install
+
+      - name: build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_PROJECT_ID }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            dist/
+            .next/
+            node_modules/
+            turbo/
+            packages/*/dist/
+            packages/*/.next/
+            apps/*/dist/
+            apps/*/.next/
+            .turbo/
+          retention-days: 1
+
+      # Create a separate artifact for node_modules to preserve symlinks and permissions
+      - name: Upload node_modules
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules
+          retention-days: 1
+
+  code_style:
+    needs: setup_and_build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    strategy:
+      matrix:
+        style-command:
+          - lint
+          - prettier
+          - typecheck
+          - danger
+      fail-fast: false
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+
+      - name: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'pnpm'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules
+
+      # Restore executable permissions for binaries
+      - name: Fix permissions
+        run: chmod +x node_modules/*/bin/*
+
+      - name: install
+        run: pnpm install
+
+      - name: check
+        run: pnpm ${{ matrix.style-command }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEXT_PUBLIC_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_PROJECT_ID }}
+
+  build_sample_apps:
+    needs: setup_and_build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+
+      - name: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'pnpm'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules
+
+      # Restore executable permissions for binaries
+      - name: Fix permissions
+        run: chmod +x node_modules/*/bin/*
+
+      - name: install
+        run: pnpm install
+
+      - name: build sample apps
+        run: pnpm build:sample-apps
+        env:
+          NEXT_PUBLIC_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_PROJECT_ID }}
+
+  test:
+    needs: setup_and_build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+
+      - name: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'pnpm'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules
+
+      # Restore executable permissions for binaries
+      - name: Fix permissions
+        run: chmod +x node_modules/*/bin/*
+
+      - name: install
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test:ci
+
+      - name: Report
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
+
+  ui-test:
+    needs: [code_style, test]
+    if: ${{ needs.code_style.result == 'success' && needs.test.result == 'success' && github.event.pull_request.draft == false }}
+    uses: ./.github/workflows/ui_tests.yml
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      branch: ${{ github.ref }}

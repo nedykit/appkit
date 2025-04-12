@@ -1,0 +1,32 @@
+{
+  "name": "@examples/react-solana",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite --port 3002",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.29.0",
+    "@nedykit/appkit": "workspace:*",
+    "@nedykit/appkit-adapter-solana": "workspace:*",
+    "@nedykit/appkit-wallet-button": "workspace:*",
+    "@solana/spl-token": "^0.4.13",
+    "@solana/wallet-adapter-backpack": "0.1.14",
+    "@solana/wallet-adapter-wallets": "0.19.32",
+    "@solana/web3.js": "1.98.0",
+    "@tanstack/react-query": "5.24.8",
+    "axios": "1.8.3",
+    "decimal.js": "^10.5.0",
+    "js-sha256": "0.11.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "vite": "5.4.12"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
+    "@vitejs/plugin-react": "4.2.1",
+    "vite": "5.4.12"
+  }
+}

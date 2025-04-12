@@ -1,0 +1,29 @@
+import { Meta, Title } from '@storybook/blocks'
+
+import '@nedykit/appkit-ui-new/src/components/wui-icon'
+import '@nedykit/appkit-ui-new/src/components/wui-text'
+import '@nedykit/appkit-ui-new/src/layout/wui-flex'
+import '@nedykit/appkit-ui-new/src/layout/wui-grid'
+
+import { iconOptions } from '../../utils/PresetUtils'
+
+<Meta title="assets/Icons" />
+
+<Title>Icons</Title>
+
+<wui-grid gridTemplateColumns="repeat(6, 1fr)" gap="3xl">
+  {iconOptions.map(value => (
+    <wui-flex
+      key={value}
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="space-between"
+      rowGap="3"
+    >
+      <wui-icon color="default" size="lg" name={value}></wui-icon>
+      <wui-text variant="md-regular" color="primary">
+        {value}
+      </wui-text>
+    </wui-flex>
+  ))}
+</wui-grid>
