@@ -1,7 +1,7 @@
 {
   "name": "@examples/html-wagmi-wallet-button",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
     "dev": "vite --port 3011",
     "build": "vite build"
