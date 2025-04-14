@@ -7,6 +7,7 @@ import CounterState from './components/CounterState'
 import IncrementButton from './components/Increment'
 import TokenTransfer from './components/TokenTransfer'
 import IncrementSplPaidButton from './components/IncrementSplPaid'
+import Faucet from './components/Faucet'
 export default function App() {
   const { themeMode } = useAppKitTheme()
   document.documentElement.className = themeMode
@@ -27,6 +28,7 @@ export default function App() {
       <CounterState />
       <IncrementButton />
       <IncrementSplPaidButton />
+      <Faucet />
       <TokenTransfer />
 
     </div>

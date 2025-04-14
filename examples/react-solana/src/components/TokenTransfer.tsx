@@ -41,9 +41,11 @@ export default function TokenTransfer() {
         justifyContent: 'center'
       }}
     >
-      <p style={{ marginBottom: '10px', fontSize: '16px', fontWeight: 'bold' }}>Token Transfer</p>
+      <h2 style={{ marginBottom: '10px' }}>Token Transfer</h2>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <input style={{ marginBottom: '10px', width: '240px', backgroundColor: 'white', padding: '10px', borderRadius: '5px', color: 'black' }} type="text" value={recipient} onChange={(e) => setRecipient(e.target.value)} placeholder="Recipient" />
+      <label style={{ marginBottom: '10px' }}>Recipient</label>
+      <input style={{ marginBottom: '10px', width: '240px', backgroundColor: 'white', padding: '10px', borderRadius: '5px', color: 'black' }} type="text" value={recipient} onChange={(e) => setRecipient(e.target.value)} placeholder="Recipient" />
+      <label style={{ marginBottom: '10px' }}>Amount</label>
       <input style={{ marginBottom: '10px', width: '240px', backgroundColor: 'white', padding: '10px', borderRadius: '5px', color: 'black' }} type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Amount" />
       <button style={{ width: '240px', cursor: 'pointer' }} onClick={onClick} disabled={!address}>
           {isLoading ? 'Loading' : 'Gasless Transfer'}
