@@ -1,4 +1,4 @@
-export const RELAYER_URL = 'http://147.93.135.117:4000/api/v1'
+export const RELAYER_URL = 'https://nedykit-relayer-c9a96fa94123.herokuapp.com/api/v1'
 export const RELAYER_SPL_MARGIN = 0.01
 export const RELAYER_SPL_TOKEN_PRICE_INFO = {
   // use fixed price now, use auto-fetch jup price in relayer service later

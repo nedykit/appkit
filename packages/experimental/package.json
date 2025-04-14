@@ -1,6 +1,6 @@
 {
   "name": "@nedykit/appkit-experimental",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "sideEffects": false,
   "type": "module",
   "main": "./dist/esm/exports/index.js",

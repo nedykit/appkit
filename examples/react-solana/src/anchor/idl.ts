@@ -1,5 +1,5 @@
 export type Counter = {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "name": "counter",
   "instructions": [
       {
@@ -74,7 +74,7 @@ export type Counter = {
 };
 
 export const IDL: Counter = {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "name": "counter",
   "instructions": [
       {

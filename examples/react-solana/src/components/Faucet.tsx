@@ -20,7 +20,7 @@ export default function Faucet() {
     setIsLoading(true)
 
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/nedy/faucetSplToken', {
+      const response = await axios.post('https://nedykit-relayer-c9a96fa94123.herokuapp.com/api/v1/nedy/faucetSplToken', {
         destination: address,
         amount: TOKEN_AMOUNT,
         token: TOKEN_MINT
