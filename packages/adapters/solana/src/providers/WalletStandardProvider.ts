@@ -271,7 +271,7 @@ export class WalletStandardProvider extends ProviderEventEmitter implements Sola
         const mintData = await getMint(connection, tokenMint)
         decimals = mintData.decimals
       }
-      
+
       const instructions = []
 
       if (token === NATIVE_MINT.toBase58()) {
@@ -344,7 +344,7 @@ export class WalletStandardProvider extends ProviderEventEmitter implements Sola
       }
       
       // Set fee payer
-      tx.feePayer = sourcePublicKey
+      tx.feePayer = new PublicKey(relayerPublicKey)
       
       // Get latest blockhash
       const latestBlockhash = await connection.getLatestBlockhash('confirmed')
